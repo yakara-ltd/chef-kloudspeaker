@@ -1,0 +1,34 @@
+server {
+<%- for key, value in @directives.sort + @ordered_directives -%>
+<%- case value -%>
+<%- when nil -%>
+<%- when true -%>
+  <%= key %> on;
+<%- when false -%>
+  <%= key %> off;
+<%- when Array -%>
+  <%= key %> <%= value.join(key == 'ssl_ciphers' ? ':' : ' ') %>;
+<%- else -%>
+  <%= key %> <%= value %>;
+<%- end -%>
+<%- end -%>
+
+<%- if @ssl_redirect -%>
+<%- if @listen_prefix -%>
+  listen <%= @listen_prefix %>80;
+<%- end -%>
+
+  if ($scheme = http) {
+    rewrite ^ https://<%= @directives['server_name'] %><%= ":#{@ssl_redirect}" unless @ssl_redirect == 443 %>$request_uri? redirect;
+  }
+<%- end -%>
+
+  # Support the REST API instead of enabling service-param.
+  rewrite ^(.*\.php)/(.*)$ /$1?sp=$2 last;
+
+  location ~ .*\.php$ {
+    include /etc/nginx/fastcgi_params;
+    fastcgi_pass unix:/var/run/php-fpm-kloudspeaker.sock;
+    fastcgi_param SCRIPT_FILENAME <%= @directives['root'] %>$fastcgi_script_name;
+  }
+}

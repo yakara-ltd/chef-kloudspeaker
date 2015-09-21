@@ -1,0 +1,20 @@
+---
+driver:
+  name: vagrant
+  network:
+    - ['forwarded_port', {guest: 80, host: 8080, auto_correct: true}]
+
+provisioner:
+  name: chef_zero
+
+platforms:
+  - name: centos-7.1
+
+suites:
+  - name: default
+    run_list:
+      - recipe[kloudspeaker]
+    attributes:
+      mariadb:
+        install:
+          prefer_os_package: true
