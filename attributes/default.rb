@@ -18,8 +18,8 @@
 # limitations under the License.
 #
 
-default['kloudspeaker']['version'] = '2.7.3'
-default['kloudspeaker']['checksum'] = '2c29776c83919b19f68452e5115ae75e956cc1d6f823494d72e8f1909bcc637c'
+default['kloudspeaker']['version'] = '2.7.5'
+default['kloudspeaker']['checksum'] = '5e59ae9285d498aa64482533b357253a29595e2c162340224d63ca45cc07cc20'
 default['kloudspeaker']['download_url'] = "https://github.com/sjarvela/kloudspeaker/releases/download/v#{node['kloudspeaker']['version']}/kloudspeaker_#{node['kloudspeaker']['version']}.zip"
 
 default['kloudspeaker']['dir'] = '/var/www/kloudspeaker'
