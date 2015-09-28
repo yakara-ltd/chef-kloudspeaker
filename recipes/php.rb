@@ -34,8 +34,10 @@ case database_config['type']
 when 'mysql'
   package "#{php_prefix}mysql"
 when 'pdo'
-  # Included in php5-common on Debian.
-  package "#{php_prefix}pdo" unless platform_family?('debian')
+  package "#{php_prefix}pdo" do
+    # Included in php5-common on Debian.
+    not_if { platform_family?('debian') }
+  end
 when 'postgresql'
   package "#{php_prefix}pgsql"
 when 'sqlite3'
