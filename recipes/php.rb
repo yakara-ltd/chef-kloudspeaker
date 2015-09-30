@@ -26,6 +26,12 @@ php_prefix = value_for_platform_family(
   'default' => 'php-'
 )
 
+# Needed by the WebDAV plugin.
+package ["#{php_prefix}mbstring", "#{php_prefix}xml"] do
+  # mbstring and xml are built-in on Debian.
+  not_if { platform_family?('debian') }
+end
+
 package "#{php_prefix}gd" do
   only_if { node['kloudspeaker']['configuration']['enable_thumbnails'] }
 end

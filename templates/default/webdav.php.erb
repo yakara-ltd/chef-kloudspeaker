@@ -1,0 +1,9 @@
+<?php
+
+<%- for key, value in @configuration -%>
+$<%= key %> = <%= ruby_to_php value %>;
+<%- end -%>
+
+require_once("kloudspeaker_dav.php");
+
+?>

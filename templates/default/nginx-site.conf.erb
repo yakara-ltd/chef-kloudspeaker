@@ -23,6 +23,9 @@ server {
   }
 <%- end -%>
 
+  # This is for the WebDAV plugin.
+  rewrite ^<%= Regexp.escape node['kloudspeaker']['webdav']['configuration']['BASE_URI'].chomp('/') %>(/|$) /backend/dav/index.php last;
+
   # Support the REST API instead of enabling service-param.
   rewrite ^(.*\.php)/(.*)$ /$1?sp=$2 last;
 

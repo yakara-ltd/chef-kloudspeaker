@@ -28,14 +28,17 @@ Installs the MariaDB server, as well as the Ruby gem needed to create the databa
 Remember that the mariadb cookbook sets a blank root password by default so be sure to change it.
 
 #### kloudspeaker::php
-Installs PHP-FPM, as well as PHP-GD if thumbnail support is enabled, and the relevant extension for your chosen database backend. To have it select the right backend automatically, execute the mariadb recipe first. This recipe is called by the nginx recipe below.
+Installs PHP-FPM, as well as some required PHP extensions, including the relevant extension for your chosen database backend. To have it select the right backend automatically, execute the mariadb recipe first. This recipe is called by the nginx recipe below.
 
 #### kloudspeaker::nginx
 Installs and configures nginx to point to the PHP-FPM pool set up by the recipe above.
 
+#### kloudspeaker::webdav
+Downloads the Kloudspeaker WebDAV plugin zip and installs it using the ark cookbook, under `/var/www/kloudspeaker/backend/dav` by default. It creates an `index.php` file based on attributes under `node['kloudspeaker']['webdav']['configuration']`. The WebDAV URL defaults to `/backend/dav` but you can change the `BASE_URI` attribute to something more convenient like `/dav/`; don't forget the trailing slash here!
+
 TODO
 ----
-- Support the additional downloadable plugins
+- Support more of the additional downloadable plugins
 - mysql recipe (for using MySQL instead of MariaDB)
 - postgresql recipe (does Kloudspeaker really support PostgreSQL?)
 - apache recipe (for using Apache httpd instead of nginx)
