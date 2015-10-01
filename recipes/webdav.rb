@@ -18,10 +18,13 @@
 # limitations under the License.
 #
 
+extend SELinuxPolicy::Helpers
+include_recipe 'selinux_policy::install' if use_selinux
+
 include_recipe 'kloudspeaker::application'
 dav_dir = node['kloudspeaker']['dir'] + '/backend/dav'
 
-ark 'kloudspeaker-webdav' do
+ark_resource = ark 'kloudspeaker-webdav' do
   version node['kloudspeaker']['webdav']['version']
   url node['kloudspeaker']['webdav']['download_url']
   checksum node['kloudspeaker']['webdav']['checksum']
@@ -40,10 +43,17 @@ template "#{dav_dir}/index.php" do
   mode '0644'
 end
 
-# Directories to hold the locking data and TemporaryFileFilter
-# files. Although the nginx rewrite rule will prevent normal browser
-# access to these, it's best to be safe so lock them down.
+# Directories for locking data and TemporaryFileFilter files.
 %w( data temp ).each do |dir|
+  # Allow writing to these directories under SELinux. Note that we
+  # have to use the real versioned path as symlinks are not honoured.
+  selinux_policy_fcontext "#{Regexp.escape dav_dir}/#{dir}(/.*)?" do
+    file_spec lazy { "#{Regexp.escape ark_resource.path}/#{dir}(/.*)?" }
+    secontext 'httpd_sys_rw_content_t'
+  end
+
+  # Although the nginx rewrite rule will prevent normal browser access
+  # to these directories, it's best to be safe so lock them down.
   directory "#{dav_dir}/#{dir}" do
     owner node['kloudspeaker']['user']
     group node['kloudspeaker']['group']

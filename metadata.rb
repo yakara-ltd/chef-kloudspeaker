@@ -12,5 +12,6 @@ depends 'mariadb'
 depends 'mysql2_chef_gem'
 depends 'nginx', '<3'
 depends 'php-fpm'
+depends 'selinux_policy'
 
 supports 'centos'
