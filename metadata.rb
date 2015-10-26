@@ -10,7 +10,7 @@ depends 'ark'
 depends 'database'
 depends 'mariadb'
 depends 'mysql2_chef_gem'
-depends 'nginx', '<3'
+depends 'nginx', '< 3.0.0'
 depends 'php-fpm'
 depends 'selinux_policy'
 
