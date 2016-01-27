@@ -3,7 +3,7 @@
 # Cookbook Name:: kloudspeaker
 # Attributes:: default
 #
-# Copyright (C) 2015 Yakara Ltd
+# Copyright (C) 2015-2016 Yakara Ltd
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,8 +18,8 @@
 # limitations under the License.
 #
 
-default['kloudspeaker']['version'] = '2.7.9'
-default['kloudspeaker']['checksum'] = '97c435a9358ec89e79440134ddd72b8f895c4a2ed0693d4a374777ebea1ad333'
+default['kloudspeaker']['version'] = '2.7.11'
+default['kloudspeaker']['checksum'] = '9d0196bc0499bf27f1aaf6d9fb87cca593d7102f91789d344143d2d0cbd1f739'
 default['kloudspeaker']['download_url'] = "https://github.com/sjarvela/kloudspeaker/releases/download/v#{node['kloudspeaker']['version']}/kloudspeaker_#{node['kloudspeaker']['version']}.zip"
 
 default['kloudspeaker']['dir'] = '/var/www/kloudspeaker'
