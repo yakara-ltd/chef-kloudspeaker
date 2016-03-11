@@ -3,7 +3,7 @@
 # Cookbook Name:: kloudspeaker
 # Attributes:: nginx
 #
-# Copyright (C) 2015 Yakara Ltd
+# Copyright (C) 2015-2016 Yakara Ltd
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@
 #
 
 default['kloudspeaker']['nginx']['directives']['access_log'] = "#{node['nginx']['log_dir']}/kloudspeaker.access.log"
+default['kloudspeaker']['nginx']['directives']['client_max_body_size'] = '256m'
 default['kloudspeaker']['nginx']['directives']['index'] = 'index.php index.html'
 default['kloudspeaker']['nginx']['directives']['listen'] = '80'
 default['kloudspeaker']['nginx']['directives']['root'] = node['kloudspeaker']['dir']
