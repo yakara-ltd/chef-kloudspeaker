@@ -19,6 +19,7 @@
 #
 
 default['kloudspeaker']['php']['values'] = {
+  'allow_url_fopen'     => 'Off',
   'memory_limit'        => '384M',
   'post_max_size'       => '256M',
   'upload_max_filesize' => '192M'
