@@ -40,11 +40,13 @@ config.delete('ssl_redirect') if listen !~ /\bssl\b/
 
 template "#{node['nginx']['dir']}/sites-available/kloudspeaker" do
   source 'nginx-site.conf.erb'
+  variables config
+  helpers Chef::Kloudspeaker::Helpers
+  notifies :reload, 'service[nginx]'
+
   owner 'root'
   group 'root'
   mode '0644'
-  variables config
-  notifies :reload, 'service[nginx]'
 end
 
 nginx_site 'kloudspeaker'

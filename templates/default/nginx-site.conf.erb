@@ -1,16 +1,6 @@
 server {
-<%- for key, value in @directives.sort + @ordered_directives -%>
-<%- case value -%>
-<%- when nil -%>
-<%- when true -%>
-  <%= key %> on;
-<%- when false -%>
-  <%= key %> off;
-<%- when Array -%>
-  <%= key %> <%= value.join(key == 'ssl_ciphers' ? ':' : ' ') %>;
-<%- else -%>
-  <%= key %> <%= value %>;
-<%- end -%>
+<%- nginx_directives @directives.sort + @ordered_directives do |line| -%>
+  <%= line %>
 <%- end -%>
 
 <%- if @ssl_redirect -%>
@@ -30,6 +20,9 @@ server {
   rewrite ^(.*\.php)/(.*)$ /$1?sp=$2 last;
 
   location ~ .*\.php$ {
+<%- nginx_directives @location['directives'].sort + @location['ordered_directives'] do |line| -%>
+    <%= line %>
+<%- end -%>
     include /etc/nginx/fastcgi_params;
     fastcgi_pass unix:/var/run/php-fpm-kloudspeaker.sock;
     fastcgi_param SCRIPT_FILENAME <%= @directives['root'] %>$fastcgi_script_name;

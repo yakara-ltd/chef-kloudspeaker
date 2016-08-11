@@ -57,6 +57,33 @@ class Chef
           raise "can't convert #{object.class.name} instance to PHP"
         end
       end
+
+      def nginx_directives(hash)
+        return unless hash
+
+        for key, value in hash
+          case value
+          when nil
+          when true
+            yield "#{key} on;"
+          when false
+            yield "#{key} off;"
+          when Array
+            case key
+            when 'allow', 'deny'
+              value.each do |v|
+                yield "#{key} #{v};"
+              end
+            when 'ssl_ciphers'
+              yield "#{key} " + value.join(':') + ';'
+            else
+              yield "#{key} " + value.join(' ') + ';'
+            end
+          else
+            yield "#{key} #{value};"
+          end
+        end
+      end
     end
   end
 end

@@ -25,6 +25,8 @@ default['kloudspeaker']['nginx']['directives']['listen'] = '80'
 default['kloudspeaker']['nginx']['directives']['root'] = node['kloudspeaker']['dir']
 default['kloudspeaker']['nginx']['directives']['server_name'] = node['fqdn']
 
+default['kloudspeaker']['nginx']['location']['directives'] = {}
+default['kloudspeaker']['nginx']['location']['ordered_directives'] = []
 default['kloudspeaker']['nginx']['ordered_directives'] = []
 default['kloudspeaker']['nginx']['ssl_redirect'] = 443
 

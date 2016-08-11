@@ -16,6 +16,16 @@ suites:
       - recipe[kloudspeaker]
       - recipe[kloudspeaker::webdav]
     attributes:
+      kloudspeaker:
+        nginx:
+          ordered_directives:
+            - ['allow', 'all']
+            - ['deny', ['127.0.0.254', '127.0.0.253']]
+          location:
+            directives:
+              allow: all
+            ordered_directives:
+              - ['deny', ['127.0.0.252', '127.0.0.251']]
       mariadb:
         install:
           prefer_os_package: true
