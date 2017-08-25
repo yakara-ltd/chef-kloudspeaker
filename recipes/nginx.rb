@@ -3,7 +3,7 @@
 # Cookbook Name:: kloudspeaker
 # Recipe:: nginx
 #
-# Copyright (C) 2015 Yakara Ltd
+# Copyright (C) 2017 Yakara Ltd
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-include_recipe 'nginx'
+include_recipe 'chef_nginx'
 
 # Give nginx permission to use the PHP socket.
 node.default['kloudspeaker']['socket_group'] = node['nginx']['group']
