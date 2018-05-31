@@ -25,7 +25,7 @@ class Chef
         local_config = node['kloudspeaker']['configuration']['db']
         db_host = local_config['host']
 
-        unless Chef::Config[:solo] and db_host == 'localhost'
+        unless Chef::Config[:solo] or db_host == 'localhost'
           if db_node = search(:node, "fqdn:#{db_host}").first
             return db_node['kloudspeaker']['configuration']['db'].merge('host' => db_host)
           end
