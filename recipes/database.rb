@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 #
 # Author:: James Le Cuirot <james.le-cuirot@yakara.com>
-# Cookbook Name:: kloudspeaker
+# Cookbook:: kloudspeaker
 # Recipe:: database
 #
-# Copyright (C) 2015 Yakara Ltd
+# Copyright:: (C) 2015 Yakara Ltd
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,13 +25,13 @@ db = node['kloudspeaker']['configuration']['db'].to_hash
 case db['type']
 when 'mysql'
   # TODO: Use a local password attribute so that we can handle MySQL as well.
-  db_connection = { :host => 'localhost', :password => node['mariadb']['server_root_password'] }
+  db_connection = { host: 'localhost', password: node['mariadb']['server_root_password'] }
   db_provider = 'Mysql'
 when 'postgresql'
-  db_connection = { :host => 'localhost' }
+  db_connection = { host: 'localhost' }
   db_provider = 'Postgresql'
 else
-  fail 'database recipe only supports the mysql and postgresql db types'
+  raise 'database recipe only supports the mysql and postgresql db types'
 end
 
 unless db['password']
@@ -37,25 +39,45 @@ unless db['password']
   db['password'] = SecureRandom.urlsafe_base64
   node2 = Chef::Node.load node.name
 
-  node.normal['kloudspeaker']['configuration']['db']['password'] = db['password']
-  node2.normal['kloudspeaker']['configuration']['db']['password'] = db['password']
+  node.override['kloudspeaker']['configuration']['db']['password'] = db['password']
+  node2.override['kloudspeaker']['configuration']['db']['password'] = db['password']
   node2.save
 end
 
-database_user db['user'] do
-  provider Chef::Provider::Database.const_get(db_provider + 'User')
-  connection db_connection
-  database_name db['database']
-  password db['password']
+case db['type']
+when 'mysql'
 
-  if db_provider == 'Mysql'
+  mariadb_database db['database'] do
+    host db_connection["host"]
+  end
+
+  mariadb_user db['user'] do
+    host db_connection["host"]
+    database_name db['database']
+    password db['password']
     host '%'
     action :grant
   end
+
+
+
+# when 'postgresql'
+#   postgresql_user db['user'] do
+#     host db_connection["host"]
+#     database_name db['database']
+#     password db['password']
+
+#     if db_provider == 'Mysql'
+#       host '%'
+#       action :grant
+#     end
+#   end
+
+#   mariadb_database db['database'] do
+#     host db_connection["host"]
+#     owner db['user']
+#   end
+else
+  raise 'database recipe only supports the mysql and postgresql db types'
 end
 
-database db['database'] do
-  provider Chef::Provider::Database.const_get(db_provider)
-  connection db_connection
-  owner db['user']
-end

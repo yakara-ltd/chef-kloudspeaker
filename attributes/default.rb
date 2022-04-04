@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 #
 # Author:: James Le Cuirot <james.le-cuirot@yakara.com>
-# Cookbook Name:: kloudspeaker
+# Cookbook:: kloudspeaker
 # Attributes:: default
 #
-# Copyright (C) 2015-2016 Yakara Ltd
+# Copyright:: (C) 2015-2016 Yakara Ltd
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +22,8 @@
 
 default['kloudspeaker']['version'] = '2.7.13'
 default['kloudspeaker']['checksum'] = '5acb3862b7dd2f778bcf6635b83968d7f7b1befa289bdcbd9175411b53ae77b5'
-default['kloudspeaker']['download_url'] = "https://github.com/sjarvela/kloudspeaker/releases/download/v#{node['kloudspeaker']['version']}/kloudspeaker_#{node['kloudspeaker']['version']}.zip"
+default['kloudspeaker']['download_url'] =
+  "https://github.com/sjarvela/kloudspeaker/releases/download/v#{node['kloudspeaker']['version']}/kloudspeaker_#{node['kloudspeaker']['version']}.zip"
 
 default['kloudspeaker']['dir'] = '/var/www/kloudspeaker'
 default['kloudspeaker']['user'] = 'kloudspeaker'
@@ -33,40 +36,40 @@ default['kloudspeaker']['configuration'] = {
   'db' => {
     'host' => 'localhost',
     'user' => 'kloudspeaker',
-    'database' => 'kloudspeaker'
+    'database' => 'kloudspeaker',
   },
   'plugins' => {
     'ItemDetails' => [],
     'FileViewerEditor' => {
       'previewers' => {
-        'Image' => ['gif', 'jpg', 'png']
+        'Image' => %w(gif jpg png),
       },
       'viewers' => {
-        'Image' => ['gif', 'jpg', 'png']
-      }
-    }
-  }
+        'Image' => %w(gif jpg png),
+      },
+    },
+  },
 }
 
 default['kloudspeaker']['client']['title'] = 'Example Kloudspeaker Page'
 
 default['kloudspeaker']['client']['configuration'] = {
   'language' => {
-    'default' => 'en'
+    'default' => 'en',
   },
   'file-view' => {
     'list-view-columns' => {
       'name' => {
-        'width' => 250
+        'width' => 250,
       },
       'size' => {},
       'file-modified' => {
-        'width' => 150
-      }
-    }
+        'width' => 150,
+      },
+    },
   },
   'modules' => {
-    'load' => ['kloudspeaker/ui/dropbox']
+    'load' => ['kloudspeaker/ui/dropbox'],
   },
   'plugins' => {
     'itemdetails' => {
@@ -75,14 +78,14 @@ default['kloudspeaker']['client']['configuration'] = {
           'metadata-created' => {},
           'last-modified' => {},
           'size' => {},
-          'exif' => {}
+          'exif' => {},
         },
         '*' => {
           'metadata-created' => {},
           'last-modified' => {},
-          'size' => {}
-        }
-      }
-    }
-  }
+          'size' => {},
+        },
+      },
+    },
+  },
 }

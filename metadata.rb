@@ -1,13 +1,16 @@
+# frozen_string_literal: true
+
 name             'kloudspeaker'
-maintainer       'James Le Cuirot'
-maintainer_email 'james.le-cuirot@yakara.com'
-license          'Apache 2.0'
+maintainer       'Nathan James'
+maintainer_email 'nathan.james@yakara.com'
+license          'Apache-2.0'
 description      'Installs and configures Kloudspeaker'
-long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          '0.2.1'
 
+chef_version '>= 17'
+
 depends 'ark'
-depends 'database'
+# depends 'database'
 depends 'mariadb'
 depends 'mysql2_chef_gem', '>= 2.0'
 depends 'chef_nginx'

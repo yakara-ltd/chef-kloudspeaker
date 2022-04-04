@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 #
 # Author:: James Le Cuirot <james.le-cuirot@yakara.com>
-# Cookbook Name:: kloudspeaker
+# Cookbook:: kloudspeaker
 # Attributes:: php
 #
-# Copyright (C) 2015 Yakara Ltd
+# Copyright:: (C) 2015 Yakara Ltd
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,8 +21,8 @@
 #
 
 default['kloudspeaker']['php']['values'] = {
-  'allow_url_fopen'     => 'Off',
-  'memory_limit'        => '384M',
-  'post_max_size'       => '256M',
-  'upload_max_filesize' => '192M'
+  'allow_url_fopen' => 'Off',
+  'memory_limit' => '384M',
+  'post_max_size' => '256M',
+  'upload_max_filesize' => '192M',
 }

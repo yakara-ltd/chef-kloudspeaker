@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 #
 # Author:: James Le Cuirot <james.le-cuirot@yakara.com>
-# Cookbook Name:: kloudspeaker
+# Cookbook:: kloudspeaker
 # Recipe:: mariadb
 #
-# Copyright (C) 2017 Yakara Ltd
+# Copyright:: (C) 2017 Yakara Ltd
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,9 +20,9 @@
 # limitations under the License.
 #
 
-include_recipe 'mariadb::server'
+# include_recipe 'mariadb::server'
 
-mysql2_chef_gem_mariadb 'default'
+# mysql2_chef_gem_mariadb 'default'
 
 node.default['kloudspeaker']['configuration']['db']['type'] = 'mysql'
 node.default['kloudspeaker']['configuration']['db']['charset'] = 'utf8'

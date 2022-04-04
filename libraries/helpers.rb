@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 #
 # Author:: James Le Cuirot <james.le-cuirot@yakara.com>
-# Cookbook Name:: kloudspeaker
+# Cookbook:: kloudspeaker
 # Library:: helpers
 #
-# Copyright (C) 2015 Yakara Ltd
+# Copyright:: (C) 2015 Yakara Ltd
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,14 +27,12 @@ class Chef
         local_config = node['kloudspeaker']['configuration']['db']
         db_host = local_config['host']
 
-        unless Chef::Config[:solo] or db_host == 'localhost'
-          if db_node = search(:node, "fqdn:#{db_host}").first
-            return db_node['kloudspeaker']['configuration']['db'].merge('host' => db_host)
-          end
+        if !(Chef::Config[:solo] || (db_host == 'localhost')) && (db_node = search(:node, "fqdn:#{db_host}").first)
+          return db_node['kloudspeaker']['configuration']['db'].merge('host' => db_host)
         end
 
         # Fall back to local.
-        return local_config
+        local_config
       end
 
       def ruby_to_php(object)
@@ -42,13 +42,13 @@ class Chef
             ruby_to_php(elem)
           end
 
-          'array(' + contents.join(', ') + ')'
+          "array(#{contents.join(', ')})"
         when Hash
           contents = object.sort.map do |key, value|
-            key.inspect + ' => ' + ruby_to_php(value)
+            "#{key.inspect} => #{ruby_to_php(value)}"
           end
 
-          'array(' + contents.join(', ') + ')'
+          "array(#{contents.join(', ')})"
         when Integer, String, TrueClass, FalseClass
           object.inspect
         when NilClass
@@ -61,9 +61,10 @@ class Chef
       def nginx_directives(hash)
         return unless hash
 
-        for key, value in hash
+        hash.each do |key, value|
           case value
           when nil
+            nil
           when true
             yield "#{key} on;"
           when false
