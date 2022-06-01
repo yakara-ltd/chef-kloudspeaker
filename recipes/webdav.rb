@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 #
 # Author:: James Le Cuirot <james.le-cuirot@yakara.com>
-# Cookbook Name:: kloudspeaker
+# Cookbook:: kloudspeaker
 # Recipe:: webdav
 #
-# Copyright (C) 2015 Yakara Ltd
+# Copyright:: (C) 2015-2022 Yakara Ltd
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,14 +21,21 @@
 #
 
 extend SELinuxPolicy::Helpers
-include_recipe 'selinux_policy::install' if use_selinux
+include_recipe 'selinux_policy::install' if use_selinux(true)
 
 include_recipe 'kloudspeaker::application'
-dav_dir = node['kloudspeaker']['dir'] + '/backend/dav'
+dav_dir = "#{node['kloudspeaker']['dir']}/backend/dav"
+
+temparchivepath = '/tmp/kloudspeaker-webdav-plugin.zip'
+
+cookbook_file temparchivepath do
+  source 'kloudspeaker_webdav_2.8.zip'
+  action :create
+end
 
 ark_resource = ark 'kloudspeaker-webdav' do
   version node['kloudspeaker']['webdav']['version']
-  url node['kloudspeaker']['webdav']['download_url']
+  url "file://#{temparchivepath}"
   checksum node['kloudspeaker']['webdav']['checksum']
 
   home_dir dav_dir
@@ -35,7 +44,7 @@ end
 
 template "#{dav_dir}/index.php" do
   source 'webdav.php.erb'
-  variables :configuration => node['kloudspeaker']['webdav']['configuration']
+  variables configuration: node['kloudspeaker']['webdav']['configuration']
   helpers Chef::Kloudspeaker::Helpers
 
   owner 'root'
@@ -44,7 +53,7 @@ template "#{dav_dir}/index.php" do
 end
 
 # Directories for locking data and TemporaryFileFilter files.
-%w( data temp ).each do |dir|
+%w(data temp).each do |dir|
   # Allow writing to these directories under SELinux. Note that we
   # have to use the real versioned path as symlinks are not honoured.
   selinux_policy_fcontext "#{Regexp.escape dav_dir}/#{dir}(/.*)?" do

@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 #
 # Author:: James Le Cuirot <james.le-cuirot@yakara.com>
-# Cookbook Name:: kloudspeaker
+# Cookbook:: kloudspeaker
 # Recipe:: application
 #
-# Copyright (C) 2015 Yakara Ltd
+# Copyright:: (C) 2015-2022 Yakara Ltd
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +22,7 @@
 
 extend Chef::Kloudspeaker::Helpers
 
-package ['unzip', 'rsync']
+package %w(unzip rsync)
 
 group node['kloudspeaker']['group'] do
   system true
@@ -57,7 +59,7 @@ config['db'].merge! database_config
 
 template "#{node['kloudspeaker']['dir']}/backend/configuration.php" do
   source 'configuration.php.erb'
-  variables :configuration => config
+  variables configuration: config
   helpers Chef::Kloudspeaker::Helpers
 
   owner 'root'

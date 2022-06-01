@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 #
 # Author:: James Le Cuirot <james.le-cuirot@yakara.com>
-# Cookbook Name:: kloudspeaker
+# Cookbook:: kloudspeaker
 # Attributes:: nginx
 #
-# Copyright (C) 2015-2016 Yakara Ltd
+# Copyright:: (C) 2015-2022 Yakara Ltd
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
