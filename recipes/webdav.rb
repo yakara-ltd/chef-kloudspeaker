@@ -26,10 +26,10 @@ include_recipe 'selinux_policy::install' if use_selinux(true)
 include_recipe 'kloudspeaker::application'
 dav_dir = "#{node['kloudspeaker']['dir']}/backend/dav"
 
-temparchivepath = "/tmp/kloudspeaker-webdav-plugin.zip"
+temparchivepath = '/tmp/kloudspeaker-webdav-plugin.zip'
 
 cookbook_file temparchivepath do
-  source "kloudspeaker_webdav_2.8.zip"
+  source 'kloudspeaker_webdav_2.8.zip'
   action :create
 end
 

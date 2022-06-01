@@ -48,18 +48,17 @@ case db['type']
 when 'mysql'
 
   mariadb_database db['database'] do
-    host db_connection["host"]
+    host db_connection['host']
+    action :create
   end
 
   mariadb_user db['user'] do
-    host db_connection["host"]
+    host db_connection['host']
     database_name db['database']
     password db['password']
     host '%'
     action :grant
   end
-
-
 
 # when 'postgresql'
 #   postgresql_user db['user'] do
@@ -80,4 +79,3 @@ when 'mysql'
 else
   raise 'database recipe only supports the mysql and postgresql db types'
 end
-
